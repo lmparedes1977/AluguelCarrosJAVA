@@ -1,18 +1,29 @@
 package model;
 
+import java.time.LocalDate;
+
 import util.Contador;
 
 public class Veiculo {
-	
-private Integer id;
+
+	public enum Segmento{ CARRO, MOTO, CAMINHAO }
+	public enum Status {LIVRE, ALUGADO}
+	private Integer id;
 	
 	private String marca;
 	private String modelo;
 	private String placa;
 	private String cor;
 	private String ano;
+	private double valor;
+	private Segmento segmento;
+	private LocalDate dataEntrega;
+	private Status status;
 	
-	public Veiculo(String marca, String modelo, String placa, String cor, String ano) {
+	
+	public Veiculo( String marca, String modelo, String placa, String cor, 
+					String ano, Segmento segmento, double valor) {
+	
 		this.id = Contador.proximo();
 		
 		this.marca = marca;
@@ -20,6 +31,9 @@ private Integer id;
 		this.placa = placa;
 		this.cor = cor;
 		this.ano = ano;
+		this.segmento = segmento;
+		this.valor = valor;
+		this.status = Status.LIVRE;
 	}
 	
 	public Integer getId() {
@@ -58,6 +72,42 @@ private Integer id;
 	public void setAno(String ano) {
 		this.ano = ano;
 	}
+	public Segmento getSegmento() {
+		return segmento;
+	}
+	public void setSegmento(Segmento segmento) {
+		this.segmento = segmento;
+	}
 	
+	
+	public String toString() {
+		return this.id + " - " + this.marca + " - " + this.modelo + " - " + this.ano + " - " + this.cor + " - " +  this.valor; 
+	}
 
+	public double getValor() {
+		return valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
+
+	public LocalDate getDataEntrega() {
+		return dataEntrega;
+	}
+
+	public void setDataEntrega(LocalDate dataEntrega) {
+		this.dataEntrega = dataEntrega;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
+	
+	
 }

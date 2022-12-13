@@ -1,42 +1,46 @@
 package menuprojeto;
 
-public class Menu {	
-			
-	public static void bemVindo() {
-		
-		System.out.println("==================================================");
-		System.out.println(" BEM VINDO AO SISTEMA JAVA DE ALUGUEL DE VEÍCULOS");
-		System.out.println("==================================================");
-		System.out.println("PARA INICIAR DIGITE SEU CPF OU '0' PARA SAIR: ");
-				
+public class Menu {
+
+	public static void tipoUsuario() {
+		System.out.println("====================================");
+		System.out.println("Bem vindo ao sistema de aluguel de carros");
+		System.out.println("1 - Cliente");
+		System.out.println("2 - Vendedor");
+		System.out.println("3 - Administrador");
 	}
+	
+	public static void bemVindo() {
+
+		System.out.println("Para começar, digite seu cpf: ");
+		System.out.println("Para sair, digite 0");
+	}
+	
 	
 	public static void opcoesCliente() {
 		System.out.println();
-		System.out.println("DIGITE O NR. DA OPÇÃO DESEJADA: ");
-		System.out.println("[1] - ALUGUEL DE VEÍCULO");
-		System.out.println("[2] - DEVOLVER VEÍCULO");
+		System.out.println("Digite o número referente a sua opção");
+		System.out.println("1 - Alugar um veículo");
+		System.out.println("2 - Devolver um veículo");
 	}
 	
 	public static void opcoesAdmin() {
 		System.out.println();
-		System.out.println("DIGITE O NR. DA OPÇÃO DESEJADA: ");
-		System.out.println("[1] - CADASTRAR CLIENTE");
-		System.out.println("[2] - REMOVER CLIENTE");
-		System.out.println("[3] - CADASTRAR VEÍCULO");
-		System.out.println("[4] - REMOVER VEÍCULO");
-		System.out.println("[5] - CADASTRAR VENDEDOR");
-		System.out.println("[6] - REMOVER VENDEDOR");
+		System.out.println("Digite o número referente a sua opção");
+		System.out.println("1 - Cadastrar um cliente");
+		System.out.println("2 - Remover um cliente");
+		System.out.println("3 - Cadastrar um veículo");
+		System.out.println("4 - Remover um veículo");
+		System.out.println("5 - Cadastrar um vendedor");
+		System.out.println("6 - Remover um vendedor");
 	}
 	
 	public static void opcoesVendedor() {
 		System.out.println();
-		System.out.println("DIGITE O NR. DA OPÇÃO DESEJADA: ");
-		System.out.println("[1] - BUSCAR VEÍCULO");
-		System.out.println("[2] - STATUS CONTRACHEQUE");
+		System.out.println("Digite o número referente a sua opção");
+		System.out.println("1 - Ver carros alugados");
+		System.out.println("2 - Ver seu salário + comissão atual");
 	}
-
-
-
-
+	
+	
 }
