@@ -11,10 +11,12 @@ import model.Cliente;
 import model.Cliente.TipoPessoa;
 import model.Veiculo;
 import model.Veiculo.Segmento;
+import model.Vendedor;
 import repository.AdminRepository;
 import repository.ClienteRepository;
 import repository.VeiculoRepository;
 import repository.VendedorRepository;
+import util.Normaliza;
 
 public class AdminService {
 
@@ -34,37 +36,54 @@ public class AdminService {
 	}
 
 	public Admin buscarAdminPorCpf(String cpf) {
-		List<Admin> admins = this.repository.buscarTodos();
+		return this.repository.buscarTodos().stream().filter(a -> a.getCpf().equals(cpf)).findFirst().orElse(null);
 		
-		for(Admin admin : admins) {
-			if(admin.getCpf().equals(cpf)) {
-				return admin;
-			}
-		}
-		
-		return null;
+//		List<Admin> admins = this.repository.buscarTodos();
+//		
+//		for(Admin admin : admins) {
+//			if(admin.getCpf().equals(cpf)) {
+//				return admin;
+//			}
+//		}
+//		
+//		return null;
 	}
 
-	public void cadastrarCliente() {
+	public void cadastrarPessoa(boolean cliente) {
 		sc.nextLine();
-		System.out.println("Digite o nome do cliente: ");
+		System.out.println("Digite o nome: ");
 		String nome = sc.nextLine();
 		
-		System.out.println("Digite o cpf/cnpj do cliente: ");
+		System.out.println("Digite o cpf/cnpj: ");
 		String cpf = sc.nextLine();
 		
-		System.out.println("Digite o endereço do cliente");
+		System.out.println("Digite o endereço");
 		String endereco = sc.nextLine();
 		
-		System.out.println("Digite a senha do cliente");
+		System.out.println("Digite a senha");
 		String senha = sc.nextLine();
 		
-		System.out.println("Digite o tipo do cliente (PF ou PJ)");
-		String tipo = sc.nextLine();
-		
-		Cliente novoCliente = new Cliente(nome, cpf, senha, endereco, TipoPessoa.valueOf(tipo));
-		
-		this.clienteRepository.salvar(novoCliente);
+		if(cliente) {
+			System.out.println("Digite o tipo do cliente (PF ou PJ)");
+			String tipo = sc.nextLine();
+			Cliente novoCliente = null;
+			try {
+				novoCliente = new Cliente(nome, cpf, senha, endereco, TipoPessoa.valueOf(tipo));	
+			} catch(IllegalArgumentException e) {
+				System.out.println("Tipo inválido. Vamos adicionar como o padrão: Pessoa Física");
+				novoCliente = new Cliente(nome, cpf, senha, endereco, TipoPessoa.PF);	
+			}
+			
+			this.clienteRepository.salvar(novoCliente);
+		}else {
+			System.out.println("Digite o salário do vendedor");
+			double salario = sc.nextDouble();
+			
+			Vendedor novoVendedor = new Vendedor(nome, cpf, senha, endereco, salario);
+			
+			this.vendedorRepository.salvar(novoVendedor);
+		}
+
 	}
 	
 	public void removerCliente() {
@@ -81,7 +100,7 @@ public class AdminService {
 		this.clienteRepository.excluirPorId(opcao);
 	}
 
-	public void cadastrarUmVeiculo() {
+	public void cadastrarUmVeiculo() throws Exception {
 		sc.nextLine();
 		System.out.println("Digite a marca do veículo: ");
 		String marca = sc.nextLine();
@@ -91,6 +110,8 @@ public class AdminService {
 		
 		System.out.println("Digite a placa do veículo");
 		String placa = sc.nextLine();
+		
+		Normaliza.validaPlaca(placa);
 		
 		System.out.println("Digite a cor do veículo");
 		String cor = sc.nextLine();
@@ -103,9 +124,14 @@ public class AdminService {
 		
 		System.out.println("Digite o valor do veículo");
 		double valor = sc.nextDouble();
-		
-		
-		Veiculo veiculo = new Veiculo(marca, modelo, placa, cor, ano, Segmento.valueOf(segmento), valor);
+		Veiculo veiculo = null;
+		try {
+			veiculo = new Veiculo(marca, modelo, placa, cor, ano, Segmento.valueOf(segmento.toLowerCase()), valor);	
+		} catch(IllegalArgumentException e) {
+			System.out.println("Tipo inválido. Vamos adicionar como o padrão: Carro");
+			veiculo = new Veiculo(marca, modelo, placa, cor, ano, Segmento.CARRO, valor);	
+		}
+	
 		
 		this.veiculoRepository.salvar(veiculo);
 		
@@ -118,10 +144,25 @@ public class AdminService {
 			System.out.println(veiculo);
 		}
 		
-		System.out.println("Escolha qual cliente você deseja excluir");
+		System.out.println("Escolha qual veículo você deseja excluir");
 		
 		int opcao = sc.nextInt();
 		
 		this.veiculoRepository.excluirPorId(opcao);
+	}
+
+	public void removerVendedor() {
+		List<Vendedor> todosVendedores = this.vendedorRepository.buscarTodos();
+		
+		for(Vendedor vendedor : todosVendedores) {
+			System.out.println(vendedor);
+		}
+		
+		System.out.println("Escolha qual vendedor você deseja excluir");
+		
+		int opcao = sc.nextInt();
+		
+		this.vendedorRepository.excluirPorId(opcao);
+		
 	}
 }

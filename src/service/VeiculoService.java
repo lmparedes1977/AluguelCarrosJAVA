@@ -1,18 +1,19 @@
 package service;
 
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import exception.VeiculoException;
 import model.Veiculo;
 import model.Veiculo.Status;
 import repository.ClienteRepository;
 import repository.VeiculoRepository;
 
 public class VeiculoService {
-	
 	private VeiculoRepository repository;
 	
 	public VeiculoRepository getRepository() {
@@ -30,17 +31,25 @@ public class VeiculoService {
 	
 	
 	public void buscarTodosCarrosLivres() {
-		List<Veiculo> todosVeiculos = this.repository.buscarTodos();
+		this.repository.buscarTodos().stream()
+		.filter(v -> v.getStatus() == Status.LIVRE).forEach(System.out::println);;
 		
-		for(Veiculo veiculo : todosVeiculos) {
-			if(veiculo.getStatus() == Status.LIVRE) {
-				System.out.println(veiculo);
-			}
-		}
+//		for(Veiculo veiculo : todosVeiculos) {
+//			if(veiculo.getStatus() == Status.LIVRE) {
+//				System.out.println(veiculo);
+//			}
+//		}
+		
+		
+		
 	}
 	
-	public Veiculo alugaVeiculo(int idVeiculo, int diasAlugado) {
+	public Veiculo alugaVeiculo(int idVeiculo, int diasAlugado) throws VeiculoException {
 		Veiculo veiculo = this.repository.buscarPorId(idVeiculo);
+		
+		if(veiculo == null) {
+			throw new VeiculoException("Veículo não encontrado!");
+		}
 		
 		if(veiculo.getStatus() == Status.ALUGADO) {
 			System.out.println("Veículo alugado!!");
@@ -63,14 +72,15 @@ public class VeiculoService {
 	}
 	
 	public void veiculosAlugados(){
-		
-		List<Veiculo> veiculos = this.repository.buscarTodos();
-		
-		for(Veiculo veiculo : veiculos) {
-			if(veiculo.getStatus() == Status.ALUGADO) {
-				System.out.println(veiculo);
-			}
-		}
+		this.repository.buscarTodos().stream().filter(v -> v.getStatus() == Status.ALUGADO).forEach(System.out::println);
+
+//		List<Veiculo> veiculos = this.repository.buscarTodos();
+//		
+//		for(Veiculo veiculo : veiculos) {
+//			if(veiculo.getStatus() == Status.ALUGADO) {
+//				System.out.println(veiculo);
+//			}
+//		}
 	
 	}
 	

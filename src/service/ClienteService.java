@@ -1,12 +1,12 @@
 package service;
 
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import exception.VeiculoException;
 import model.Cliente;
 import model.Cliente.TipoPessoa;
 import model.Veiculo;
@@ -71,23 +71,26 @@ public class ClienteService {
 		cliente.setDebitos(cliente.getDebitos() + (veiculo.getValor() * quantidadeDias));
 	}
 
-	public void mostrarVeiculosAlugados(Cliente clienteLogado) {
+	public void mostrarVeiculosAlugados(Cliente clienteLogado) throws VeiculoException {
 		List<Veiculo> veiculos = clienteLogado.getVeiculosAlugados();
 		
-		for(Veiculo veiculo : veiculos) {
-			System.out.println(veiculo);
+		if(veiculos == null) {
+			throw new VeiculoException("Sem veículos para devolver");
 		}
+		
+		veiculos.forEach(System.out::println);
 		
 	}
 
 	public void removerVeiculo(Cliente clienteLogado,int veiculoId) {
-		
-		for(int i = 0; i < clienteLogado.getVeiculosAlugados().size(); i++) {
-			if(clienteLogado.getVeiculosAlugados().get(i).getId() == veiculoId) {
-				clienteLogado.getVeiculosAlugados().remove(i);
-				return;
-			}
-		}
+		clienteLogado.getVeiculosAlugados().removeIf(v -> v.getId() == veiculoId);
+
+//		for(int i = 0; i < clienteLogado.getVeiculosAlugados().size(); i++) {
+//			if(clienteLogado.getVeiculosAlugados().get(i).getId() == veiculoId) {
+//				clienteLogado.getVeiculosAlugados().remove(i);
+//				return;
+//			}
+//		}
 				
 	}
 }
